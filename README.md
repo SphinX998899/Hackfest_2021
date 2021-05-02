@@ -8,4 +8,6 @@ hello - Ths folder is the main folder containing our Robot Structure , config fi
 
 Trash Detection - This module contains the code for the Trash Detection using Instance Segmentation approach.
 
+Solidworks - This has the design files of the CAD model of the Robot 
+
 
