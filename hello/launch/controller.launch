@@ -1,0 +1,11 @@
+<launch>
+    <rosparam file="$(find hello)/config/controller.yaml" command="load"/>
+
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/" args="joint_state_controller drive_controller"/>
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="rob_st_pub">
+        <!-- <param name="tf_prefix" value="cora" /> -->
+    </node>
+
+    <node pkg="topic_tools" type="mux" name="cmd_vel_mux" args="/drive_controller/cmd_vel /teleop/cmd_vel /planner/cmd_vel mux:=cmd_vel_mux" output="screen" />
+</launch>

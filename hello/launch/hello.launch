@@ -1,0 +1,35 @@
+<launch>
+  <arg name="x_pos" default="-1.47"/>
+  <arg name="y_pos" default="12.5"/>
+  <arg name="z_pos" default="0.0"/>
+  <arg name="gui" default="true"/>
+  <arg name="open_rviz" default="true"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find aws_robomaker_hospital_world)/worlds/hospital.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <!-- <arg name="gui_required" value="$(arg gui)"/> -->
+    <!-- <arg name="server_required" value="true"/> -->
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <param name="robot_description" command="$(find hello)/urdf/hello.urdf" />
+
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args=" -param robot_description -urdf -model hello -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos)" output="screen" />
+
+  <!-- Publishes revolute joint static transforms to /tf -->
+  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher">
+    <param name="gui" value="true" />
+  </node>
+
+  <include file="$(find hello)/launch/controller.launch">
+  </include>
+
+  <!-- rviz -->
+  <group if="$(arg open_rviz)">
+    <node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find hello)/rviz/config.rviz"/>
+  </group>
+
+</launch>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="world_name" default="$(find aws_robomaker_hospital_world)/worlds/hospital.world"/>
+                <!--arg name="world_name" default = "worlds/empty_world.world"/!-->
+		<arg name="paused" value="false"/>
+		<arg name="gui" value="true"/>
+  </include>
+  <node
+    name="tf_footprint_base"
+    pkg="tf"
+    type="static_transform_publisher"
+    args="0 0 0 0 0 0 base_link base_footprint 40" />
+  <node
+    name="spawn_model"
+    pkg="gazebo_ros"
+    type="spawn_model"
+    args="-file $(find hello)/urdf/hello.urdf -urdf -model hello"
+    output="screen" />
+  <node
+    name="fake_joint_calibration"
+    pkg="rostopic"
+    type="rostopic"
+    args="pub /calibrated std_msgs/Bool true" />
+
+  <arg name="x" default="-1.470674" />
+  <arg name="y" default="12.442792" />
+  <arg name="z" default="0.000000"/>
+</launch>
